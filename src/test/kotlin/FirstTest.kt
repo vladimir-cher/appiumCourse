@@ -22,4 +22,49 @@ class FirstTest : BaseMethods() {
 
         assertElementHasText(searchTextView, "Search Wikipedia", "text in search field doesnt match")
     }
+
+    @Test
+    fun findSomethingCloseSearch() {
+        val searchField = searchElementById("org.wikipedia:id/search_container", "Cannot find search field", 10)
+
+        searchField.click()
+
+        val search = searchElementById("org.wikipedia:id/search_src_text", "Cannot find search", 10)
+
+        search.sendKeys("Wikipedia")
+
+        val firstArticle = searchElementByXpath(
+            "//*[contains(@text, 'Free online encyclopedia that anyone can edit')]",
+            "cannot find first article",
+            10
+        )
+
+        val secondArticle = searchElementByXpath(
+            "//*[contains(@text, 'American non-profit charitable organization')]",
+            "cannot find first article",
+            10
+        )
+
+        val closeSearch = searchElementById("org.wikipedia:id/search_close_btn", "cannot find close search element", 10)
+
+        assertElementHasText(
+            firstArticle,
+            "Free online encyclopedia that anyone can edit",
+            "text in first article doesn't match"
+        )
+
+        assertElementHasText(
+            secondArticle,
+            "American non-profit charitable organization",
+            "text in second article doesn't match"
+        )
+
+        closeSearch.click()
+
+        waitForElementNotPresentByXpath(
+            "//*[contains(@text, 'American non-profit charitable organization')]",
+            "cannot find first article",
+            10
+        )
+    }
 }

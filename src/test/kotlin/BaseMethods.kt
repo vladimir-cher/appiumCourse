@@ -27,4 +27,13 @@ open class BaseMethods : TestConfig() {
     fun assertElementHasText(element: WebElement, text: String, errorMessage: String) {
         Assert.assertEquals("$errorMessage \n", text, element.text)
     }
+
+    fun waitForElementNotPresentByXpath(xpath: String, errorMessage: String, timeoutInSeconds: Long): Boolean? {
+        val wait = WebDriverWait(driver, timeoutInSeconds)
+        val by = By.xpath(xpath)
+
+        wait.withMessage("$errorMessage \n")
+
+        return wait.until(ExpectedConditions.invisibilityOfElementLocated(by))
+    }
 }
