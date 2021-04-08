@@ -1,3 +1,4 @@
+import org.junit.Assert
 import org.junit.jupiter.api.Test
 
 class FirstTest : BaseMethods() {
@@ -66,5 +67,33 @@ class FirstTest : BaseMethods() {
             "cannot find first article",
             10
         )
+    }
+
+    @Test
+    fun findAllElementsCheckText() {
+        val searchField = searchElementById("org.wikipedia:id/search_container", "Cannot find search field", 10)
+
+        searchField.click()
+
+        val search = searchElementById("org.wikipedia:id/search_src_text", "Cannot find search", 10)
+
+        val textToSearch = "Java"
+        search.sendKeys(textToSearch)
+
+        val articles = driver.findElementsByXPath("//*[contains(@text, '$textToSearch')]")
+//         вариант реализации через for
+//            for (i in 0 until articles.size) {
+//                Assert.assertTrue(articles[i].getAttribute("text").contains(textToSearch))
+//            }
+
+        //через forEachIndexed
+//        articles.forEachIndexed() { index, _ ->
+//            Assert.assertTrue(articles[index].getAttribute("text").contains(textToSearch))
+//        }
+
+        articles.forEach { articles ->
+            Assert.assertTrue(articles.getAttribute("text").contains(textToSearch))
+        }
+
     }
 }
