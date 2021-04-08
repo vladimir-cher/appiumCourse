@@ -80,6 +80,8 @@ class FirstTest : BaseMethods() {
         val textToSearch = "Java"
         search.sendKeys(textToSearch)
 
+        driver.hideKeyboard()
+
         val articles = driver.findElementsByXPath("//*[contains(@text, '$textToSearch')]")
 //         вариант реализации через for
 //            for (i in 0 until articles.size) {
